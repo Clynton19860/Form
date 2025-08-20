@@ -1,12 +1,14 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Users, BarChart3, Home, FileText } from 'lucide-react'
+import { Users, BarChart3, Home, FileText, Menu, X } from 'lucide-react'
 
 export default function Navigation() {
   const pathname = usePathname()
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const navItems = [
     { href: '/', label: 'Home', icon: Home },
@@ -15,8 +17,11 @@ export default function Navigation() {
     { href: '/admin/demo', label: 'Demo', icon: BarChart3 },
   ]
 
+  const closeMobileMenu = () => setIsMobileMenuOpen(false)
+
   return (
-    <motion.nav
+    <>
+      <motion.nav
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       className="fixed top-0 left-0 right-0 z-50"
@@ -82,12 +87,33 @@ export default function Navigation() {
           {/* Mobile menu button */}
           <div className="md:hidden">
             <motion.button 
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               whileTap={{ scale: 0.95 }}
               className="p-3 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-gray-700 hover:bg-white/20 hover:text-primary-600 transition-all duration-300"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
+              <AnimatePresence mode="wait">
+                {isMobileMenuOpen ? (
+                  <motion.div
+                    key="close"
+                    initial={{ opacity: 0, rotate: -90 }}
+                    animate={{ opacity: 1, rotate: 0 }}
+                    exit={{ opacity: 0, rotate: 90 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <X className="w-6 h-6" />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="menu"
+                    initial={{ opacity: 0, rotate: 90 }}
+                    animate={{ opacity: 1, rotate: 0 }}
+                    exit={{ opacity: 0, rotate: -90 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <Menu className="w-6 h-6" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </motion.button>
           </div>
         </div>
@@ -96,5 +122,60 @@ export default function Navigation() {
       {/* Subtle glow effect at the bottom */}
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
     </motion.nav>
+
+    {/* Mobile Menu Dropdown */}
+    <AnimatePresence>
+      {isMobileMenuOpen && (
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: 'auto' }}
+          exit={{ opacity: 0, height: 0 }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+          className="fixed top-20 left-0 right-0 z-40 bg-white/10 backdrop-blur-md border-b border-white/10 shadow-2xl"
+        >
+          <div className="px-4 py-6 space-y-4">
+            {navItems.map((item) => {
+              const Icon = item.icon
+              const isActive = pathname === item.href
+              
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={closeMobileMenu}
+                  className="block"
+                >
+                  <motion.div
+                    whileHover={{ x: 10 }}
+                    whileTap={{ scale: 0.98 }}
+                    className={`flex items-center space-x-4 p-4 rounded-xl transition-all duration-300 ${
+                      isActive
+                        ? 'bg-gradient-to-r from-primary-500/20 to-secondary-500/20 text-primary-700 shadow-lg'
+                        : 'text-gray-700 hover:text-primary-600 hover:bg-white/10'
+                    }`}
+                  >
+                    <Icon className={`w-6 h-6 transition-colors duration-300 ${
+                      isActive ? 'text-primary-600' : 'group-hover:text-primary-500'
+                    }`} />
+                    <span className="font-medium text-lg">{item.label}</span>
+                    
+                    {/* Active indicator */}
+                    {isActive && (
+                      <motion.div
+                        layoutId="mobileActiveTab"
+                        className="ml-auto w-2 h-2 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full"
+                        initial={false}
+                        transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                      />
+                    )}
+                  </motion.div>
+                </Link>
+              )
+            })}
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  </>
   )
 }
