@@ -152,29 +152,29 @@ export default function SurveyPage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex gap-4 mb-12 justify-center"
+          className="flex flex-col sm:flex-row gap-4 mb-12 justify-center"
         >
           <button
             onClick={() => setCurrentSection('likert')}
-            className={`px-8 py-4 rounded-2xl font-medium transition-all duration-300 flex items-center gap-3 ${
+            className={`px-4 sm:px-8 py-3 sm:py-4 rounded-2xl font-medium transition-all duration-300 flex items-center gap-3 text-center justify-center ${
               currentSection === 'likert'
                 ? 'bg-gradient-to-r from-primary-500 to-secondary-500 text-white shadow-xl scale-105'
                 : 'bg-white/20 text-gray-700 hover:bg-white/30 hover:scale-105'
             }`}
           >
             <BarChart3 className="w-5 h-5" />
-            Likert Questions ({answeredLikertQuestions}/{totalLikertQuestions})
+            <span className="text-sm sm:text-base">Likert Questions ({answeredLikertQuestions}/{totalLikertQuestions})</span>
           </button>
           <button
             onClick={() => setCurrentSection('text')}
-            className={`px-8 py-4 rounded-2xl font-medium transition-all duration-300 flex items-center gap-3 ${
+            className={`px-4 sm:px-8 py-3 sm:py-4 rounded-2xl font-medium transition-all duration-300 flex items-center gap-3 text-center justify-center ${
               currentSection === 'text'
                 ? 'bg-gradient-to-r from-primary-500 to-secondary-500 text-white shadow-xl scale-105'
                 : 'bg-white/20 text-gray-700 hover:bg-white/30 hover:scale-105'
             }`}
           >
-            <FileText className="w-5 h-5" />
-            Open Questions ({answeredTextQuestions}/{totalTextQuestions})
+            <FileText className="w-5 h-8" />
+            <span className="text-sm sm:text-base">Open Questions ({answeredTextQuestions}/{totalTextQuestions})</span>
           </button>
         </motion.div>
 
@@ -206,19 +206,19 @@ export default function SurveyPage() {
                     <button
                       type="button"
                       onClick={() => toggleCategory(category)}
-                      className="w-full p-8 flex items-center justify-between hover:bg-white/5 transition-all duration-300 group"
+                      className="w-full p-4 sm:p-8 flex items-center justify-between hover:bg-white/5 transition-all duration-300 group"
                     >
-                      <div className="flex items-center gap-6">
-                        <div className={`w-16 h-16 bg-gradient-to-br ${categoryColor} rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
-                          <Icon className="w-8 h-8 text-white" />
+                      <div className="flex items-center gap-3 sm:gap-6">
+                        <div className={`w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br ${categoryColor} rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
+                          <Icon className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
                         </div>
-                        <div className="text-left">
-                          <h3 className="text-2xl font-bold text-gray-800 mb-2">{category}</h3>
-                          <div className="flex items-center gap-4">
+                        <div className="text-left flex-1 min-w-0">
+                          <h3 className="text-lg sm:text-2xl font-bold text-gray-800 mb-2">{category}</h3>
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
                             <span className="text-sm text-gray-500">
                               {answeredInCategory}/{categoryQuestions.length} completed
                             </span>
-                            <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+                            <div className="w-20 sm:w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
                               <div 
                                 className="h-full bg-gradient-to-r from-primary-500 to-secondary-500 transition-all duration-500"
                                 style={{ width: `${(answeredInCategory / categoryQuestions.length) * 100}%` }}
@@ -243,7 +243,7 @@ export default function SurveyPage() {
                           animate={{ height: 'auto', opacity: 1 }}
                           exit={{ height: 0, opacity: 0 }}
                           transition={{ duration: 0.4, ease: "easeInOut" }}
-                          className="px-8 pb-8 space-y-8"
+                          className="px-4 sm:px-8 pb-8 space-y-8"
                         >
                           {categoryQuestions.map((question, index) => (
                             <motion.div
@@ -251,19 +251,19 @@ export default function SurveyPage() {
                               initial={{ opacity: 0, y: 20 }}
                               animate={{ opacity: 1, y: 0 }}
                               transition={{ delay: index * 0.1 }}
-                              className="glass-panel p-6 hover:shadow-xl transition-all duration-300"
+                              className="glass-panel p-4 sm:p-6 hover:shadow-xl transition-all duration-300"
                             >
                               <div className="mb-6">
-                                <div className="flex items-start gap-4">
-                                  <div className="w-8 h-8 bg-gradient-to-br from-primary-400 to-secondary-400 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                                <div className="flex items-start gap-3 sm:gap-4">
+                                  <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br from-primary-400 to-secondary-400 rounded-full flex items-center justify-center text-white font-bold text-xs sm:text-sm flex-shrink-0">
                                     {question.id}
                                   </div>
-                                  <div className="flex-1">
-                                    <h4 className="text-lg font-semibold text-gray-800 mb-3">
+                                  <div className="flex-1 min-w-0">
+                                    <h4 className="text-base sm:text-lg font-semibold text-gray-800 mb-3">
                                       {question.question}
                                     </h4>
                                     {question.description && (
-                                      <p className="text-gray-600 bg-gray-50 p-3 rounded-lg border-l-4 border-primary-200">
+                                      <p className="text-gray-600 bg-gray-50 p-2 sm:p-3 rounded-lg border-l-4 border-primary-200 text-sm sm:text-base">
                                         💡 {question.description}
                                       </p>
                                     )}
@@ -278,7 +278,7 @@ export default function SurveyPage() {
                                 rules={{ required: 'Please select a rating' }}
                                 render={({ field }) => (
                                   <div className="space-y-4">
-                                    <div className="grid grid-cols-5 gap-3">
+                                    <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-5 gap-3">
                                       {likertScaleLabels.map((label, index) => (
                                         <label
                                           key={index}
@@ -349,19 +349,19 @@ export default function SurveyPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className="glass-panel p-8 hover:shadow-xl transition-all duration-300"
+                  className="glass-panel p-4 sm:p-8 hover:shadow-xl transition-all duration-300"
                 >
                   <div className="space-y-6">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-gradient-to-br from-secondary-400 to-secondary-600 rounded-2xl flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
+                    <div className="flex items-start gap-3 sm:gap-4">
+                      <div className="w-8 h-8 sm:w-12 sm:h-12 bg-gradient-to-br from-secondary-400 to-secondary-600 rounded-2xl flex items-center justify-center text-white font-bold text-sm sm:text-lg flex-shrink-0">
                         {question.id}
                       </div>
-                      <div className="flex-1">
-                        <h4 className="text-xl font-semibold text-gray-800 mb-3">
+                      <div className="flex-1 min-w-0">
+                        <h4 className="text-lg sm:text-xl font-semibold text-gray-800 mb-3">
                           {question.question}
                         </h4>
                         {question.description && (
-                          <p className="text-gray-600 bg-blue-50 p-4 rounded-lg border-l-4 border-secondary-200">
+                          <p className="text-gray-600 bg-blue-50 p-3 sm:p-4 rounded-lg border-l-4 border-secondary-200 text-sm sm:text-base">
                             💭 {question.description}
                           </p>
                         )}
@@ -379,7 +379,7 @@ export default function SurveyPage() {
                             minRows={4}
                             maxRows={10}
                             placeholder="Share your thoughts and provide specific examples..."
-                            className="w-full p-6 border-2 border-gray-200 rounded-2xl resize-none focus:ring-4 focus:ring-primary-200 focus:border-primary-500 transition-all duration-300 text-lg"
+                            className="w-full p-4 sm:p-6 border-2 border-gray-200 rounded-2xl resize-none focus:ring-4 focus:ring-primary-200 focus:border-primary-500 transition-all duration-300 text-base sm:text-lg"
                           />
                           {errors.text?.[question.id] && (
                             <p className="text-red-500 text-sm bg-red-50 p-3 rounded-lg border border-red-200 mt-3">
@@ -404,7 +404,7 @@ export default function SurveyPage() {
             <button
               type="submit"
               disabled={totalProgress < 100}
-              className="glass-button text-xl px-16 py-6 disabled:opacity-50 disabled:cursor-not-allowed group"
+              className="glass-button text-lg sm:text-xl px-8 sm:px-16 py-4 sm:py-6 disabled:opacity-50 disabled:cursor-not-allowed group"
             >
               {totalProgress < 100 ? (
                 <>
